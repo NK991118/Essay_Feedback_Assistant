@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 from .config import UNIVERSITY_DATA
-from .ocr import process_image_to_text
+# from .ocr import process_image_to_text
 from .grader import get_essay_grader
 
 from .models import Submission
@@ -36,6 +36,7 @@ def my_answer(request):
         answer_image = request.FILES.get('answer_image')
         
         if answer_image:
+            from .ocr import process_image_to_text
             extracted_text = process_image_to_text(answer_image)
         else:
             extracted_text = "업로드된 이미지가 없습니다."

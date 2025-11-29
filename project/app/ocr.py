@@ -9,6 +9,9 @@ def get_ocr_model():
     global ocr_model
     if ocr_model is None:
         print("PaddleOCR 모델을 로딩합니다...")
+        
+        from paddleocr import PaddleOCR
+        
         ocr_model = PaddleOCR(lang='korean',
                                use_doc_orientation_classify=False,
                                use_doc_unwarping=False,
@@ -19,6 +22,8 @@ def get_ocr_model():
 def process_image_to_text(image_file):
 
     try:
+        
+        model = get_ocr_model()
 
         image_bytes = image_file.read()
 
