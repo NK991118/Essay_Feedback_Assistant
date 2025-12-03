@@ -6,6 +6,7 @@ from .forms import CustomAuthenticationForm, CustomUserCreationForm
 from django.contrib.auth.decorators import login_required 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import traceback
 
 import json
 
@@ -61,6 +62,7 @@ def run_grading(request):
             grader = get_essay_grader() 
             ai_comment = grader.grade_essay(question_id, student_answer)
         except Exception as e:
+            traceback.print_exc()
             ai_comment = f"AI 엔진 로드 중 오류가 발생했습니다: {e}"
         
     if "오류가 발생했습니다" not in ai_comment:
@@ -157,4 +159,4 @@ def chat_api(request):
     return JsonResponse({'error': 'POST 요청만 허용됩니다.'}, status=405)
 
 def introduce(request):
-    return render(request, "introduce.html")
+    return render(request, "app/introduce.html")
