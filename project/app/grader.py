@@ -12,12 +12,33 @@ load_dotenv()
 
 FAISS_INDEX_DIR = os.path.join(settings.BASE_DIR, 'data', 'faiss')
 
-def safe_retriever_invoke(retriever, query, source_type):
-    docs = retriever.get_relevant_documents(query)
+# def safe_retriever_invoke(retriever, query, source_type):
+#     docs = retriever.get_relevant_documents(query)
+#     for doc in docs:
+#         if doc.metadata.get("source_type") == source_type:
+#             return doc.page_content
+#     return "관련 정보를 찾을 수 없습니다."
+
+def safe_retriever_invoke(retriever, question_id, source_type):
+    # 현재는 question_id만 가지고 검색, source_type은 메타데이터 필터에 사용
+    query = str(question_id)
+
+    try:
+        # 새 인터페이스 (LangChain 1.x)
+        docs = retriever.invoke(query)
+    except AttributeError:
+        # 구버전 호환
+        docs = retriever.get_relevant_documents(query)
+    except Exception as e:
+        print(f"[safe_retriever_invoke] Retriever 호출 중 오류: {e}")
+        return "관련 정보를 찾을 수 없습니다."
+
     for doc in docs:
         if doc.metadata.get("source_type") == source_type:
             return doc.page_content
+
     return "관련 정보를 찾을 수 없습니다."
+
 
 class EssayGrader:
     def __init__(self):
@@ -109,38 +130,38 @@ class EssayGrader:
         print(f"질문 '{user_question[:20]}...'에 대한 AI 챗봇 응답을 생성합니다...")
 
         prompt_template = """
-    당신은 10년 이상 수능 및 대학 논술을 전문적으로 가르쳐온 첨삭 전문가입니다.
-    학생의 질문에 대해 학생이 작성한 논술 문장을 바탕으로 명확하고 구체적인 피드백을 제공합니다.
+        당신은 10년 이상 수능 및 대학 논술을 전문적으로 가르쳐온 첨삭 전문가입니다.
+        학생의 질문에 대해 학생이 작성한 논술 문장을 바탕으로 명확하고 구체적인 피드백을 제공합니다.
 
-    [제시 문장]
-    아래는 벡터 검색을 통해 선택된 학생의 답안 내용 일부입니다. 참고해 분석에 활용하세요.
+        [제시 문장]
+        아래는 벡터 검색을 통해 선택된 학생의 답안 내용 일부입니다. 참고해 분석에 활용하세요.
 
-    {user_answer}
+        {user_answer}
 
-    [학생 질문]
-    {followup_question}
+        [학생 질문]
+        {followup_question}
 
-    [답변 지침]
-    1. 질문의 요지를 파악하고, 답안 문장 중 관련 있는 내용을 연결해 해석합니다.
-    2. 부족하거나 개선이 필요한 부분이 있다면 논리적으로 설명하고 구체적인 문장 또는 방향을 제안합니다.
-    3. 피드백은 친절하고 조리 있게 제시하되, 논리성과 구조적 사고력을 기를 수 있도록 유도합니다.
-    4. 학생이 잘 이해할 수 있도록 길고 구체적으로, 상세히 답변해줍니다.
+        [답변 지침]
+        1. 질문의 요지를 파악하고, 답안 문장 중 관련 있는 내용을 연결해 해석합니다.
+        2. 부족하거나 개선이 필요한 부분이 있다면 논리적으로 설명하고 구체적인 문장 또는 방향을 제안합니다.
+        3. 피드백은 친절하고 조리 있게 제시하되, 논리성과 구조적 사고력을 기를 수 있도록 유도합니다.
+        4. 학생이 잘 이해할 수 있도록 길고 구체적으로, 상세히 답변해줍니다.
 
-    [답변 형식 예시]
-    ### 🧠 분석
-    - (질문 요지를 요약하고, 학생 답안에서 관련 문장을 어떻게 해석했는지 설명)
+        [답변 형식 예시]
+        ### 🧠 분석
+        - (질문 요지를 요약하고, 학생 답안에서 관련 문장을 어떻게 해석했는지 설명)
 
-    ### 💡 개선 제안
-    - (보다 나은 문장 표현 / 논리 전개 / 사례 추가 등 구체적 개선 방법 제안)
+        ### 💡 개선 제안
+        - (보다 나은 문장 표현 / 논리 전개 / 사례 추가 등 구체적 개선 방법 제안)
 
-    ### 🗒️ 예시 답변
-    - (분석과 개선 제안을 토대로 모범 답안 혹은 진행 방향을 예시로 보여주기)
+        ### 🗒️ 예시 답변
+        - (분석과 개선 제안을 토대로 모범 답안 혹은 진행 방향을 예시로 보여주기)
 
-    ### 🏁 요약 및 다음 단계
-    - (종합 정리와 향후 유사 질문 대비 학습 팁)
+        ### 🏁 요약 및 다음 단계
+        - (종합 정리와 향후 유사 질문 대비 학습 팁)
 
-    [답변]
-    """
+        [답변]
+        """
 
         prompt = ChatPromptTemplate.from_template(prompt_template)
 
