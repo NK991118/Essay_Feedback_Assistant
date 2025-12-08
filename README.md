@@ -257,7 +257,8 @@ streamlit run 04_app/Home.py
 특히 메인 페이지와 시스템 소개 페이지를 제작하면서 사용자가 처음 마주하는 화면이 어떤 인상을 주어야 하는지, 쉽고 직관적인 UI 흐름은 어떻게 구성해야 할지와 같은 사용자 경험 중심의 관점을 적극적으로 적용하려 노력했습니다. 이 과정 덕분에 웹 프레임워크에 대한 두려움도 많이 줄었고, 추후 기회가 된다면 AWS 기반 배포까지 진행해 서비스 완성도를 더 높여보고 싶다는 목표도 생겼습니다.
 
 ## 9️⃣ 그 외 관련 자료
-- [🔗 팀 프로젝트 원본 저장소](https://github.com/skn-ai14-250409/SKN14-3rd-5Team)
+- [🔗 팀 프로젝트 원본 저장소(v1)](https://github.com/skn-ai14-250409/SKN14-3rd-5Team)
+- [🔗 팀 프로젝트 원본 저장소(v2)](https://github.com/skn-ai14-250409/SKN14-4th-5Team)
 - [🔗 발표 자료 v1 (Streamlit)](https://drive.google.com/file/d/1rX8quq0aSIkHryWgVijANwh3vEIeBWdn/view?usp=sharing)
 - [🔗 발표 자료 v2 (Django)](https://drive.google.com/file/d/1QUpMn3sR6AdW1Xbxze76NP96qzyF_6CY/view?usp=sharing)
 - **[📄 포트폴리오(PDF)] ### 추가 필요**
