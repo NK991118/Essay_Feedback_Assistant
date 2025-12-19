@@ -261,4 +261,4 @@ streamlit run 04_app/Home.py
 - [🔗 팀 프로젝트 원본 저장소(v2)](https://github.com/skn-ai14-250409/SKN14-4th-5Team)
 - [🔗 발표 자료 v1 (Streamlit)](https://drive.google.com/file/d/1rX8quq0aSIkHryWgVijANwh3vEIeBWdn/view?usp=sharing)
 - [🔗 발표 자료 v2 (Django)](https://drive.google.com/file/d/1QUpMn3sR6AdW1Xbxze76NP96qzyF_6CY/view?usp=sharing)
-- **[📄 포트폴리오(PDF)] ### 추가 필요**
+- [🔗 포트폴리오(PDF)](https://drive.google.com/file/d/1vS0vytFNFGCiZdN7D9C2grw8MtyOFMbU/view?usp=sharing)
